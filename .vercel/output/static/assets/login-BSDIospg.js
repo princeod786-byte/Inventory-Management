@@ -1,0 +1,1 @@
+import{l as e,t}from"./login-screen-DbXffIa3.js";import{C as n,S as r}from"./index-tJeQ4wre.js";var i=n();function a(){let{user:n}=e();return n?(0,i.jsx)(r,{to:`/`}):(0,i.jsx)(t,{})}export{a as component};
