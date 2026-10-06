@@ -385,11 +385,8 @@ export const removeProduct = createServerFn({ method: "POST" })
     `;
     const product = rows[0];
     if (!product) throw new Error("Product not found.");
-    if (product.status === "sold") {
-      throw new Error("Sold items stay on the ledger.");
-    }
     const name = await actorName(context.userId);
-    await sql`delete from products where id = ${data.productId} and status = 'in_stock'`;
+    await sql`delete from products where id = ${data.productId}`;
     await sql`
       insert into activity (actor_id, actor_name, action, product_id, product_name, detail)
       values (

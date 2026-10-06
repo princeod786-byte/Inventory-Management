@@ -15,9 +15,11 @@ function PictureFallback({ name }: { name: string }) {
 export function ProductCard({
   product,
   onPictureClick,
+  onRemove,
 }: {
   product: Product;
   onPictureClick: (product: Product) => void;
+  onRemove: (product: Product) => void;
 }) {
   const sold = product.status === "sold";
   const profit = product.profit;
@@ -30,30 +32,39 @@ export function ProductCard({
 
   return (
     <article className="overflow-hidden rounded-xl border border-border bg-surface shadow-soft">
-      <button
-        type="button"
-        onClick={() => onPictureClick(product)}
-        aria-label={sold ? `View sale for ${product.name}` : `Sell ${product.name}`}
-        className="group relative block aspect-square w-full overflow-hidden bg-bg"
-      >
-        {product.pictureUrl ? (
-          <img
-            src={product.pictureUrl}
-            alt=""
-            className={cn(
-              "h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-105",
-              sold && "grayscale",
-            )}
-          />
-        ) : (
-          <PictureFallback name={product.name} />
-        )}
-        {sold ? (
-          <span className="absolute top-3 left-3 rounded-full bg-fg px-2.5 py-1 text-xs font-medium tracking-wide text-primary-fg uppercase">
-            Sold
-          </span>
-        ) : null}
-      </button>
+      <div className="relative">
+        <button
+          type="button"
+          onClick={() => onPictureClick(product)}
+          aria-label={sold ? `View sale for ${product.name}` : `Sell ${product.name}`}
+          className="group relative block aspect-square w-full overflow-hidden bg-bg"
+        >
+          {product.pictureUrl ? (
+            <img
+              src={product.pictureUrl}
+              alt=""
+              className={cn(
+                "h-full w-full object-cover transition-transform duration-200 ease-out group-hover:scale-105",
+                sold && "grayscale",
+              )}
+            />
+          ) : (
+            <PictureFallback name={product.name} />
+          )}
+          {sold ? (
+            <span className="absolute top-3 left-3 rounded-full bg-fg px-2.5 py-1 text-xs font-medium tracking-wide text-primary-fg uppercase">
+              Sold
+            </span>
+          ) : null}
+        </button>
+        <button
+          type="button"
+          onClick={() => onRemove(product)}
+          className="absolute top-3 right-3 z-10 rounded-full border border-border bg-surface px-3 py-1.5 text-xs font-medium text-loss shadow-soft"
+        >
+          Remove
+        </button>
+      </div>
       <div className="space-y-2 p-4">
         <div className="flex items-start justify-between gap-3">
           <h3 className="font-display text-lg font-medium leading-snug tracking-tight">

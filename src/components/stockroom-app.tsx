@@ -8,6 +8,7 @@ import {
   addProduct,
   getDashboard,
   listProducts,
+  removeProduct,
   sellProduct,
   type Product,
 } from "@/lib/inventory";
@@ -101,6 +102,15 @@ export function StockroomApp({ user }: { user: AppUser }) {
       setSelected(product);
       invalidate();
     },
+    onError: (error) => {
+      if (unauthorized(error)) return;
+      toast.error(error.message);
+    },
+  });
+
+  const removeMutation = useMutation({
+    mutationFn: (productId: number) => removeProduct({ data: { productId } }),
+    onSuccess: invalidate,
     onError: (error) => {
       if (unauthorized(error)) return;
       toast.error(error.message);
@@ -240,6 +250,10 @@ export function StockroomApp({ user }: { user: AppUser }) {
                   key={product.id}
                   product={product}
                   onPictureClick={setSelected}
+                  onRemove={(item) => {
+                    if (!window.confirm(`Remove ${item.name} from stock?`)) return;
+                    removeMutation.mutate(item.id);
+                  }}
                 />
               ))}
             </div>
